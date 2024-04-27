@@ -12,15 +12,31 @@ const Index = () => {
   const [cleaningIncluded, setCleaningIncluded] = useState(false);
   const [bedSheetsIncluded, setBedSheetsIncluded] = useState(false);
   const [quotes, setQuotes] = useState([]);
+  const [selectedQuote, setSelectedQuote] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleGetQuotes = () => {
-    // Mocking quote retrieval
     const mockQuotes = [
       { company: "CleanFast", price: 120 },
       { company: "SparkleHome", price: 150 },
       { company: "EcoCleaners", price: 135 },
     ];
     setQuotes(mockQuotes);
+  };
+
+  const selectQuote = (quote) => {
+    setSelectedQuote(quote);
+  };
+
+  const handleBooking = (e) => {
+    e.preventDefault();
+    alert(`Booking confirmed for ${selectedQuote.company}. They will contact you at ${email}.`);
+
+    setQuotes([]);
+    setSelectedQuote(null);
+    setName("");
+    setEmail("");
   };
 
   return (
@@ -69,8 +85,28 @@ const Index = () => {
             <Box key={index} p={5} shadow="md" borderWidth="1px">
               <Text fontWeight="bold">{quote.company}</Text>
               <Text>${quote.price}</Text>
+              <Button colorScheme="green" onClick={() => selectQuote(quote)}>
+                Book This Cleaner
+              </Button>
             </Box>
           ))}
+          {selectedQuote && (
+            <Box as="form" onSubmit={handleBooking} p={5} mt={5} shadow="md" borderWidth="1px">
+              <VStack spacing={4}>
+                <FormControl isRequired>
+                  <FormLabel>Your Name</FormLabel>
+                  <Input placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Your Email</FormLabel>
+                  <Input type="email" placeholder="john@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </FormControl>
+                <Button type="submit" colorScheme="blue">
+                  Submit Booking
+                </Button>
+              </VStack>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
