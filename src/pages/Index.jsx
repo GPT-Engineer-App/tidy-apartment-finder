@@ -41,6 +41,7 @@ const Index = () => {
 
   return (
     <Box p={8} maxW="600px" mx="auto">
+      HOLAAA
       <VStack spacing={4} as="form" onSubmit={(e) => e.preventDefault()}>
         <FormControl isRequired>
           <FormLabel>Address</FormLabel>
